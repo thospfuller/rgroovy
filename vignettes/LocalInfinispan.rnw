@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[round]{natbib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% \VignetteIndexEntry{Instructions for using the ClusteredR package}
+% \VignetteEngine{knitr}
+\begin{document}
+\title{Instructions for using the rgroovyapi package}
+\author{Thomas P. Fuller}
+\maketitle
+<<packages, echo=FALSE, results="hide", message=FALSE>>=
+options(width=80)
+@
+\section{Introduction}
+Imagine being able to use The R Project for Statistical Computing with
+virtually no upper limit on the amount of memory you have to work with. If you
+find this idea attractive then keep reading.
+
+JBoss, a division of Redhat, sponsors the Infinispan project -- an open source
+implementation of shared-memory data grid technology that competes with
+proprietary (and typically expensive) platforms developed by companies such as
+Microsoft, IBM, Oracle, and other vendors. Infinispan is completely open source
+and is written in Java, has been in development for several years, and has many
+customers.
+
+The R Infinispan API Package offers users of the R Project for Statistical
+Computing the ability to easily store incredible amounts of data. This package
+achieves this by tying into the Infinispan platform and offering R users
+functions which hide integration-specific complexity.
+
+Some of the benefits this package delivers include:
+
+\textbullet\ Store and access data in-memory with everyone in your network
+using simple keys and values.
+\textbullet\ Expand the memory available to everyone simply by starting another
+instance of R, or by starting new Infinispan nodes anywhere on your local
+network.
+\textbullet\ Seperate R scripts such that loading data and analyzing the data
+do not need to be tied together.
+\textbullet\ Take advantage of existing infrastructure written in Java without
+having to tie directly into custom frameworks -- if the data can be serialized
+to the grid, then all R users will be able to utilize it using the key it’s
+stored under.
+\textbullet\ Fault tolerance is a configuration option -- set the number of
+copies to two and two copies of data will be kept on the grid. Restart an
+instance of R and the data will still be available!
+\textbullet\ Avoid continuous disk-access and queries that are required when
+working directly with a database. If the data is not available, get it from the
+database, add it to the grid using this package, and from that point forward
+anyone who needs it will find that it is already there for them to use.
+
+If your network supports IP multicast then you can be up and running on more
+than one machine in less than five minutes.
+\section{Introduction}
+
+\end{document}

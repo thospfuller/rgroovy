@@ -1,0 +1,3 @@
+Initialize               Instantiates the GroovyShell using the binding provided.
+Evaluate                 Evaluates the given Groovy script.
+About                    Function prints some information about this plugin.
