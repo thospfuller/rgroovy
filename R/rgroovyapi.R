@@ -60,19 +60,35 @@ Initialize <- function (binding = NULL) {
 
 #' Executes the groovy script.
 #'
+#' @param groovyShell The groovyShell with which to execute the specified groovy
+#'  script. Note that the groovyShell can be null, however if this is null then
+#'  the Initialize function must have been called so that a global groovyShell
+#'  instance will be available in the environment.
+#'
 #' @param groovyScript The groovy script being executed.
+#'
+#' @return The result of the Groovy script execution.
 #'
 #' @export
 #'
-Evaluate <- function (groovyScript) {
+Evaluate <- function (groovyShell = NULL, groovyScript) {
 
-    groovyShell <- rGroovyAPI.env$groovyShell
+    if (is.null (groovyShell)) {
+        groovyShell <- rGroovyAPI.env$groovyShell
+    }
 
-    result <- groovyShell$evaluate (groovyScript)
+    tryCatch(
+        result <- groovyShell$evaluate (groovyScript),
+        Throwable = function (e) {
+          e$printStackTrace ()
+            stop (
+                paste (
+                    "An exception was thrown when executing the groovy script ",
+                    "details follow.", groovyScript, e$getMessage(), sep=""))
+    })
 
     return (result)
 }
-
 
 #' Function prints some information about this plugin.
 #'
