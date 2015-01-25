@@ -6,10 +6,16 @@ groovyScript <- paste (
     "import org.apache.logging.log4j.core.Logger",
     "import org.apache.logging.log4j.LogManager",
     "final Logger log = LogManager.getLogger(this.class)",
-    "log.info 'Hello world!'",
+    "log.error 'Hello world!'",
     "return Math.E",
     sep="\n")
 
 result <- Evaluate (groovyScript=groovyScript)
 
 result
+
+-----
+
+Initialize ()
+groovyScript <- "print 'Hello world!'"
+Evaluate (groovyScript=groovyScript)

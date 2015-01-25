@@ -1,4 +1,15 @@
-#' This is the R Groovy API package documentation.
+#' This package integrates the Groovy scripting language with the R Project for
+#' Statistical Computing.
+#'
+#' From \href{http://en.wikipedia.org/wiki/Groovy_(programming_language)}{Wikipedia}:
+#'
+#' "Groovy is an object-oriented programming language for the Java platform. It
+#' is a dynamic language with features similar to those of Python, Ruby, Perl,
+#' and Smalltalk. It can be used as a scripting language for the Java Platform,
+#' is dynamically compiled to Java Virtual Machine (JVM) bytecode, and
+#' interoperates with other Java code and libraries."
+#'
+#' @seealso \href{http://groovy.codehaus.org/}{Groovy}
 #'
 #' @import rJava
 #'
@@ -12,7 +23,7 @@ NULL
 #' An environment which is used by this package when managing package-scope
 #' variables.
 #'
-rGroovyAPI.env <- new.env()
+.rGroovyAPI.env <- new.env()
 
 .onLoad <- function (libname, pkgname) {
     #
@@ -38,15 +49,26 @@ rGroovyAPI.env <- new.env()
 }
 
 #' Function sets the global binding that will be passed to the GroovyShell
-#' constructor.
+#' constructor. Note that it is not necessary to invoke however the user will be
+#' required to manage their own binding.
 #'
-#' See also http://beta.groovy-lang.org/docs/latest/html/gapi/groovy/lang/Binding.html.
+#' @param binding An instance of \href{http://beta.groovy-lang.org/docs/latest/html/gapi/groovy/lang/Binding.html}{groovy.lang.Binding}.
 #'
-#' @param binding The binding 
+#' @examples
+#'  Initialize ()
 #'
 #' @export
 #'
 Initialize <- function (binding = NULL) {
+
+    if (!is.null (.rGroovyAPI.env$groovyShell)) {
+        warning (
+            paste (
+                "Initialize has been invoked more than once -- are you sure ",
+                "this is what you intended to do?"
+            )
+        )
+    }
 
     if (is.null (binding)) {
         # We'll pass in an empty binding if the binding is null.
@@ -55,42 +77,65 @@ Initialize <- function (binding = NULL) {
 
     groovyShell <- .jnew("groovy.lang.GroovyShell", binding)
 
-    assign("groovyShell", groovyShell, envir = rGroovyAPI.env)
+    assign("groovyShell", groovyShell, envir = .rGroovyAPI.env)
 }
 
-#' Executes the groovy script.
+#' Function evaluates (executes) the groovy script and returns the result.
 #'
 #' @param groovyShell The groovyShell with which to execute the specified groovy
-#'  script. Note that the groovyShell can be null, however if this is null then
+#'  script. Note that the groovyShell can be NULL, however if this is NULL then
 #'  the Initialize function must have been called so that a global groovyShell
-#'  instance will be available in the environment.
+#'  instance will be available in the environment otherwise an exception is
+#'  raised.
 #'
 #' @param groovyScript The groovy script being executed.
 #'
-#' @return The result of the Groovy script execution.
+#' @param binding The binding that will be used
+#'
+#' @return The result of the script execution.
+#'
+#' @examples {
+#'  Initialize ()
+#'  Evaluate (groovyScript="print 'Hello world!'")
+#' }
 #'
 #' @export
 #'
-Evaluate <- function (groovyShell = NULL, groovyScript) {
+Evaluate <- function (
+    groovyShell = NULL,
+    groovyScript,
+    binding = NULL,
+    variables = NULL
+) {
 
     if (is.null (groovyShell)) {
-        groovyShell <- rGroovyAPI.env$groovyShell
+        groovyShell <- .rGroovyAPI.env$groovyShell
     }
 
-    tryCatch(
+    if (is.null (groovyShell)) {
+        stop (
+            paste (
+                "Both the local and global groovyShell(s) are null -- have ",
+                "you called the Initialize function?"
+            )
+        )
+    }
+
+    tryCatch (
         result <- groovyShell$evaluate (groovyScript),
-        Throwable = function (e) {
-          e$printStackTrace ()
+        Throwable = function (exception) {
+            #exception$printStackTrace ()
             stop (
                 paste (
-                    "An exception was thrown when executing the groovy script ",
-                    "details follow.", groovyScript, e$getMessage(), sep=""))
+                    "An exception was thrown when executing the groovy ",
+                    "script -- details follow.",
+                    groovyScript, exception$getMessage(), sep=""))
     })
 
     return (result)
 }
 
-#' Function prints some information about this plugin.
+#' Function prints some information about this package.
 #'
 #' @export
 #'
