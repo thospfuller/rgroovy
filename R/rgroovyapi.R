@@ -9,7 +9,11 @@
 #' is dynamically compiled to Java Virtual Machine (JVM) bytecode, and
 #' interoperates with other Java code and libraries."
 #'
+#' Note that this package ships with Invoke Dynamic support and hence requires
+#' Java version 1.7 or above.
+#'
 #' @seealso \href{http://groovy.codehaus.org/}{Groovy}
+#' @seealso \href{http://groovy.codehaus.org/InvokeDynamic+support}{Invoke Dynamic support}
 #'
 #' @import rJava
 #'
