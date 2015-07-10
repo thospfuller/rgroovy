@@ -1,12 +1,12 @@
-Package: rgroovyapi
+Package: Groovy4R
 Type: Package
 Title: Groovy language integration with R
-Version: 0.85
-Date: 2014-16-01
+Version: 1.0
+Date: 2015-08-01
 Author: Thomas P. Fuller <thomas.fuller@coherentlogic.com>
 Maintainer: Thomas P. Fuller <thomas.fuller@coherentlogic.com>
 Description: This package integrated the Groovy scripting language with the R
-    Project for Statistical Computing. This framework ships with Groovy 2.3.9 (
+    Project for Statistical Computing. This framework ships with Groovy 2.4.3 (
     invoke dynamic).
 SystemRequirements: Java (>= 7.0)
 Imports:
@@ -17,6 +17,6 @@ Copyright: (C) 2015 Coherent Logic Limited; ALL RIGHTS RESERVED.
 URL: http://www.r-project.org,
     http://groovy.codehaus.org/,
     http://beta.groovy-lang.org/docs/latest/html/gapi/,
-    https://coherentlogic.com/r-package-for-the-groovy-language?source=cran
-Repository: https://bitbucket.org/CoherentLogic/r-groovy-api
+    https://coherentlogic.com/Groovy4R?source=cran
+Repository: https://bitbucket.org/CoherentLogic/Groovy4R
 Archs: i386, x64
