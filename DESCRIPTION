@@ -6,8 +6,8 @@ Date: 2015-27-10
 Author: Thomas P. Fuller <thomas.fuller@coherentlogic.com>
 Maintainer: Thomas P. Fuller <thomas.fuller@coherentlogic.com>
 Description: This package integrates the Groovy scripting language with the R
-    Project for Statistical Computing. This package ships with Groovy 2.4.5 (
-    invoke dynamic).
+    Project for Statistical Computing. This package ships with Groovy 2.4.5 and
+    uses the invoke dynamic dependencies. 
 SystemRequirements: Java (>= 7.0)
 Imports:
     rJava
