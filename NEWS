@@ -1,4 +1,7 @@
-Package Groovy4R
+Package rGroovy
 =========================
 Version: 0.85 [2015-08-01]
 o  Initial release
+Version: 1.0 [2015-10-27]
+o  Package renamed to rGroovy
+o  Groovy has been updated to 2.4.5 (invoke dynamic)
