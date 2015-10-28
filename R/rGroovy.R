@@ -130,7 +130,6 @@ Evaluate <- function (
     tryCatch (
         result <- groovyShell$evaluate (groovyScript),
         Throwable = function (exception) {
-            #exception$printStackTrace ()
             stop (
                 paste (
                     "An exception was thrown when executing the groovy ",
