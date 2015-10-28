@@ -1,7 +1,10 @@
-#' This package integrates the Groovy scripting language with the R Project for
-#' Statistical Computing.
 #'
-#' From \href{http://en.wikipedia.org/wiki/Groovy_(programming_language)}{Wikipedia}:
+#' @title Groovy scripting language integration
+#'
+#' @description This package integrates the Groovy scripting language with the
+#' R Project for Statistical Computing.
+#'
+#' @details From \href{http://en.wikipedia.org/wiki/Groovy_(programming_language)}{Wikipedia}:
 #'
 #' "Groovy is an object-oriented programming language for the Java platform. It
 #' is a dynamic language with features similar to those of Python, Ruby, Perl,
@@ -49,7 +52,7 @@ NULL
 #'
 #' @param libpath The library path.
 #'
-.onUnload <- function (libpath) { 
+.onUnload <- function (libpath) {
 }
 
 #' Function sets the global binding that will be passed to the GroovyShell
