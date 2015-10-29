@@ -1,19 +1,16 @@
 #'
 #' @title Groovy scripting language integration
 #'
-#' @description This package integrates the Groovy scripting language with the
-#' R Project for Statistical Computing.
+#' @description This package integrates the Groovy scripting language with the R Project for Statistical Computing.
 #'
 #' @details From \href{http://en.wikipedia.org/wiki/Groovy_(programming_language)}{Wikipedia}:
 #'
-#' "Groovy is an object-oriented programming language for the Java platform. It
-#' is a dynamic language with features similar to those of Python, Ruby, Perl,
-#' and Smalltalk. It can be used as a scripting language for the Java Platform,
-#' is dynamically compiled to Java Virtual Machine (JVM) bytecode, and
-#' interoperates with other Java code and libraries."
+#' "Groovy is an object-oriented programming language for the Java platform. It is a dynamic language with features
+#' similar to those of Python, Ruby, Perl, and Smalltalk. It can be used as a scripting language for the Java Platform,
+#' is dynamically compiled to Java Virtual Machine (JVM) bytecode, and interoperates with other Java code and
+#' libraries."
 #'
-#' Note that this package ships with Invoke Dynamic support and hence requires
-#' Java version 1.7 or above.
+#' Note that this package ships with Invoke Dynamic support and hence requires Java version 1.7 or above.
 #'
 #' @seealso \href{http://groovy.codehaus.org/}{Groovy}
 #' @seealso \href{http://www.groovy-lang.org/indy.html}{Invoke Dynamic}
@@ -34,9 +31,8 @@ NULL
 
 .onLoad <- function (libname, pkgname) {
     #
-    # Note that we cannot add documentation to this function -- if we do, when
-    # roxygen is executed we will see an error about a missing name and the only
-    # way to get past this error is to add @name to this function or leave the
+    # Note that we cannot add documentation to this function -- if we do, when roxygen is executed we will see an error
+    # about a missing name and the only way to get past this error is to add @name to this function or leave the
     # documentation off altogether.
     #
     # Function starts the Java virtual machine.
@@ -55,11 +51,10 @@ NULL
 .onUnload <- function (libpath) {
 }
 
-#' Function sets the global binding that will be passed to the GroovyShell
-#' constructor. Note that it is not necessary to invoke however the user will be
-#' required to manage their own binding.
+#' Function sets the global instance of GroovyShell that will be used by the Evaluate function whenever it is called
+#' with a NULL GroovyShell parameter.
 #'
-#' @param binding An instance of \href{http://beta.groovy-lang.org/docs/latest/html/gapi/groovy/lang/Binding.html}{groovy.lang.Binding}.
+#' @param binding An instance of \href{http://docs.groovy-lang.org/latest/html/api/index.html?groovy/lang/Binding.html}{groovy.lang.Binding}.
 #'
 #' @examples
 #'  Initialize ()
@@ -78,7 +73,6 @@ Initialize <- function (binding = NULL) {
     }
 
     if (is.null (binding)) {
-        # We'll pass in an empty binding if the binding is null.
         binding <- .jnew("groovy.lang.Binding")
     }
 
@@ -89,15 +83,13 @@ Initialize <- function (binding = NULL) {
 
 #' Function evaluates (executes) the groovy script and returns the result.
 #'
-#' @param groovyShell The groovyShell with which to execute the specified groovy
-#'  script. Note that the groovyShell can be NULL, however if this is NULL then
-#'  the Initialize function must have been called so that a global groovyShell
-#'  instance will be available in the environment otherwise an exception is
-#'  raised.
+#' @param groovyShell The groovyShell with which to execute the specified groovy script. Note that the groovyShell can
+#'  be NULL, however if this is NULL then the Initialize function must have been called so that a global groovyShell
+#'  instance will be available in the environment otherwise an exception is raised.
 #'
 #' @param groovyScript The groovy script being executed.
 #'
-#' @param binding The binding that will be used.
+#' @param variables The variables that will be passed to the binding that is used when the groovyScript is executed.
 #'
 #' @return The result of the script execution.
 #'
@@ -110,21 +102,18 @@ Initialize <- function (binding = NULL) {
 #'
 Evaluate <- function (
     groovyShell = NULL,
-    groovyScript,
-    binding = NULL
+    groovyScript
 ) {
+    if (is.null (groovyScript)) {
+        stop ("The groovyScript parameter cannot be NULL.")
+    }
 
     if (is.null (groovyShell)) {
         groovyShell <- .rGroovyAPI.env$groovyShell
     }
 
     if (is.null (groovyShell)) {
-        stop (
-            paste (
-                "Both the local and global groovyShell(s) are null -- have ",
-                "you called the Initialize function?"
-            )
-        )
+        stop ("Both the local and global groovyShell(s) are null -- did you forget to call the Initialize function?")
     }
 
     tryCatch (
@@ -140,6 +129,46 @@ Evaluate <- function (
     return (result)
 }
 
+#' Function executes the groovy script and returns the result. Execute differs from Evaluate in that references to
+#' Groovy objects are not required. The call to Initialize is not required in order to call this function either however
+#' keep in mind that a new instance of \href{http://docs.groovy-lang.org/latest/html/api/groovy/lang/GroovyShell.html}{groovy.lang.GroovyShell}
+#' will be used every time this function is called.
+#'
+#' @param groovyScript The groovy script being executed.
+#'
+#' @param variables The variables that will be passed to the binding that is used when the groovyScript is executed.
+#'
+#' @examples {
+#'  variables <- list ()
+#'
+#'  variables["name"] = "Tom"
+#'  variables["day"]  = "Wednesday"
+#'
+#'  groovyScript <- "return \"Hello ${name}, how are you doing? Today is ${day} and tomorrow is Thursday.\""
+#'
+#'  result <- Execute (groovyScript=groovyScript, variables=variables)
+#'  result
+#' }
+#'
+#' @export
+#'
+Execute <- function (
+    groovyScript,
+    variables = NULL
+) {
+
+    binding <- .jnew("groovy.lang.Binding")
+
+    groovyShell <- .jnew("groovy.lang.GroovyShell", binding)
+
+    for (nextName in ls(variables)) {
+        nextValue <- variables[[nextName]]
+        binding$setVariable (nextName, nextValue)
+    }
+
+    return (Evaluate (groovyShell=groovyShell, groovyScript=groovyScript))
+}
+
 #' Function prints some information about this package.
 #'
 #' @export
@@ -148,7 +177,7 @@ About <- function () {
     cat (
         " ***********************************************************\n",
         "***                                                     ***\n",
-        "***         Welcome to the R Groovy API Package         ***\n",
+        "***            Welcome to the rGroovy Package           ***\n",
         "***                                                     ***\n",
         "***                    version 1.0.                     ***\n",
         "***                                                     ***\n",
