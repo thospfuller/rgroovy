@@ -19,18 +19,6 @@
 #
 
 test_that (
-    "Evaluate should fail when Initialize has never been called.",
-    {
-        groovyScript <- "return 'Hello world!'"
-
-        expect_error(
-            Evaluate (groovyScript=groovyScript),
-            "Both the local and global groovyShell(s) are null -- did you forget to call the Initialize function?"
-        )
-    }
-)
-
-test_that (
     "Calling Initialize twice does not raise an error.",
     {
         Initialize ()
@@ -41,8 +29,6 @@ test_that (
 test_that (
     "The Groovy script executes correctly.",
     {
-        #Initialize ()
-
         groovyScript <- "return 'Hello world!'"
 
         result <- Evaluate (groovyScript=groovyScript)
@@ -54,7 +40,15 @@ test_that (
 test_that (
     "A NULL Groovy script raises an exception.",
     {
-        #Initialize ()
         expect_error(Evaluate (groovyScript=NULL), "The groovyScript parameter cannot be NULL.")
+    }
+)
+
+test_that (
+    "Execute with NULL variables does not raise an exception.",
+    {
+        groovyScript <- "return 'Hello world!'"
+
+        Execute (groovyScript=groovyScript, variables=NULL)
     }
 )
