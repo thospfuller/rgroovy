@@ -89,8 +89,6 @@ Initialize <- function (binding = NULL) {
 #'
 #' @param groovyScript The groovy script being executed.
 #'
-#' @param variables The variables that will be passed to the binding that is used when the groovyScript is executed.
-#'
 #' @return The result of the script execution.
 #'
 #' @examples {
@@ -144,7 +142,7 @@ Evaluate <- function (
 #'  variables["name"] = "Tom"
 #'  variables["day"]  = "Wednesday"
 #'
-#'  groovyScript <- "return \"Hello ${name}, how are you doing? Today is ${day} and tomorrow is Thursday.\""
+#'  groovyScript <- "return \"Hello ${name}, how are you doing? Today is ${day}.\""
 #'
 #'  result <- Execute (groovyScript=groovyScript, variables=variables)
 #'  result
@@ -154,12 +152,15 @@ Evaluate <- function (
 #'
 Execute <- function (
     groovyScript,
-    variables = NULL
+    variables = list ()
 ) {
-
     binding <- .jnew("groovy.lang.Binding")
 
     groovyShell <- .jnew("groovy.lang.GroovyShell", binding)
+
+    if (is.null(variables)) {
+        variables <- list ()
+    }
 
     for (nextName in ls(variables)) {
         nextValue <- variables[[nextName]]
