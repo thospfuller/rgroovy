@@ -13,9 +13,3 @@ groovyScript <- paste (
 result <- Evaluate (groovyScript=groovyScript)
 
 result
-
------
-
-Initialize ()
-groovyScript <- "print 'Hello world!'"
-Evaluate (groovyScript=groovyScript)
