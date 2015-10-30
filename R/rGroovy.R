@@ -1,5 +1,5 @@
 #'
-#' @title Groovy scripting language integration
+#' @title Groovy Scripting Language Integration
 #'
 #' @description Functions that integrate the Groovy scripting language with the R Project for Statistical Computing.
 #'
