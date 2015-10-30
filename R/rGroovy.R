@@ -1,7 +1,7 @@
 #'
 #' @title Groovy scripting language integration
 #'
-#' @description This package integrates the Groovy scripting language with the R Project for Statistical Computing.
+#' @description Functions that integrate the Groovy scripting language with the R Project for Statistical Computing.
 #'
 #' @details From \href{http://en.wikipedia.org/wiki/Groovy_(programming_language)}{Wikipedia}:
 #'
