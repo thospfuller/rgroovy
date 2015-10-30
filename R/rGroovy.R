@@ -10,7 +10,25 @@
 #' is dynamically compiled to Java Virtual Machine (JVM) bytecode, and interoperates with other Java code and
 #' libraries."
 #'
-#' Note that this package ships with Invoke Dynamic support and hence requires Java version 1.7 or above.
+#' @examples
+#'  \dontrun{
+#' #
+#' # Installation Example
+#' #
+#' # Since this package does not ship with Groovy the user needs to specify the Groovy jars prior
+#' # to using the package -- here's an example how this is accomplished:
+#' #
+#' groovyJars <- list (
+#'     "C:/Temp/groovy.jars/groovy-2.4.5-indy.jar",
+#'     # OTHER JAR FILES...
+#' )
+#'
+#' options(GROOVY_JARS=groovyJars)
+#'
+#' library(rGroovy)
+#'
+#' Execute (groovyScript="print 'Hello world!'")
+#' }
 #'
 #' @seealso \href{http://groovy.codehaus.org/}{Groovy}
 #' @seealso \href{http://www.groovy-lang.org/indy.html}{Invoke Dynamic}
@@ -41,7 +59,10 @@ NULL
     #
     # @param pkgname The package name.
     #
-    .jpackage(pkgname, lib.loc = libname)
+
+    groovyJars <- getOption("GROOVY_JARS")
+
+    .jpackage(pkgname, lib.loc = libname, morePaths = groovyJars)
 }
 
 #' Funtion does nothing.
@@ -57,7 +78,9 @@ NULL
 #' @param binding An instance of \href{http://docs.groovy-lang.org/latest/html/api/index.html?groovy/lang/Binding.html}{groovy.lang.Binding}.
 #'
 #' @examples
+#'  \dontrun{
 #'  Initialize ()
+#'  }
 #'
 #' @export
 #'
@@ -91,10 +114,11 @@ Initialize <- function (binding = NULL) {
 #'
 #' @return The result of the script execution.
 #'
-#' @examples {
+#' @examples
+#'  \dontrun{
 #'  Initialize ()
 #'  Evaluate (groovyScript="print 'Hello world!'")
-#' }
+#'  }
 #'
 #' @export
 #'
@@ -136,7 +160,8 @@ Evaluate <- function (
 #'
 #' @param variables The variables that will be passed to the binding that is used when the groovyScript is executed.
 #'
-#' @examples {
+#' @examples
+#'  \dontrun{
 #'  variables <- list ()
 #'
 #'  variables["name"] = "Tom"
@@ -146,7 +171,7 @@ Evaluate <- function (
 #'
 #'  result <- Execute (groovyScript=groovyScript, variables=variables)
 #'  result
-#' }
+#'  }
 #'
 #' @export
 #'
